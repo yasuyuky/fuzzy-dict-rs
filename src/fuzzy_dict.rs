@@ -32,12 +32,14 @@ impl<T> FuzzyDict<T> {
     pub fn query(&self, key: &str) -> Vec<(usize, (&str, &T))> {
         let mut counter: HashMap<usize, usize> = HashMap::new();
         for ngram in self.get_ngrams(key) {
-            self.ngram_maps.get(&ngram).and_then(|ngram_map| {
-                                                     for (i, c) in ngram_map {
-                                                         *counter.entry(*i).or_insert(0) += c;
-                                                     }
-                                                     Some(())
-                                                 });
+            match self.ngram_maps.get(&ngram) {
+                Some(ngram_map) => {
+                    for (i, c) in ngram_map {
+                        *counter.entry(*i).or_insert(0) += c;
+                    }
+                }
+                None => {}
+            }
         }
         let mut result = counter.into_iter()
                                 .map(|(i, c)| (c, &self.id2key[i]))
