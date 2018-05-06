@@ -1,0 +1,6 @@
+[package]
+name = "fuzzy-dict"
+version = "0.1.0"
+authors = ["yasuyuky <yasuyuki.ymd@gmail.com>"]
+
+[dependencies]
